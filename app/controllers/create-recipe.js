@@ -5,6 +5,7 @@ import { inject as service } from "@ember/service";
 export default class CreateRecipeController extends Controller {
 
   @service recipeData
+  @service router
 
   title = "";
   description = "";
@@ -36,6 +37,7 @@ export default class CreateRecipeController extends Controller {
     event.preventDefault();
 
     let newRecipe = {
+      id: this.recipeData.generateGUID(),
       title: this.title,
       description: this.description,
       ingredients: this.ingredients.split(',').map(ingredients => ingredients.trim()),
@@ -43,5 +45,6 @@ export default class CreateRecipeController extends Controller {
     }
 
     this.recipeData.saveRecipe(newRecipe);
+    this.router.transitionTo('recipes');
   }
 }
