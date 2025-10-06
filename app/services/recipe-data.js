@@ -25,4 +25,11 @@ export default class RecipeDataService extends Service {
       }
     });
   }
+
+  // Save to local storage for the sake of testing the app independent of a backend.
+  async saveRecipe(recipe) {
+    let storedRecipes = JSON.parse(localStorage.getItem('recipes')) || []
+    storedRecipes.push(recipe)
+    localStorage.setItem('recipes', JSON.stringify(storedRecipes))
+  }
 }
