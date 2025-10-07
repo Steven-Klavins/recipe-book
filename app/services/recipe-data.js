@@ -44,4 +44,28 @@ export default class RecipeDataService extends Service {
       return v.toString(16);
     });
   }
+
+  getFavorites() {
+    return JSON.parse(localStorage.getItem("favorites")) || [];
+  }
+
+  isFavorite(recipeId) {
+    let favorites = this.getFavorites();
+    return favorites.includes(recipeId);
+  }
+
+  toggleFavorite(recipeId, isFavorite) {
+    let favorites = this.getFavorites();
+
+    if (isFavorite) {
+      if (!favorites.includes(recipeId)) {
+        favorites.push(recipeId);
+      }
+    } else {
+      favorites = favorites.filter((id) => id !== recipeId);
+    }
+
+    // Save to local storage for the sake of testing the app independent of a backend.
+    localStorage.setItem("favorites", JSON.stringify(favorites));
+  }
 }
