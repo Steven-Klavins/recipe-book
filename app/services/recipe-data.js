@@ -37,6 +37,19 @@ export default class RecipeDataService extends Service {
     localStorage.setItem("recipes", JSON.stringify(storedRecipes));
   }
 
+  // This will only work for locally stored records as others are directly loaded in via JSON.
+  async deleteRecipe(recipeId) {
+
+    let recipeRecord = this.store.peekRecord("recipe", recipeId);
+    this.store.unloadRecord(recipeRecord);
+
+    let storedRecipes = JSON.parse(localStorage.getItem("recipes")) || [];
+    let filteredRecipes = storedRecipes.filter(
+      (recipe) => String(recipe.id) !== String(recipeId)
+    );
+    localStorage.setItem("recipes", JSON.stringify(filteredRecipes));
+  }
+
   generateGUID() {
     return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, function (c) {
       var r = (Math.random() * 16) | 0,
